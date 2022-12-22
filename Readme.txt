@@ -1,0 +1,1 @@
+This is a sample code for creating a moving "ball" object using JavaScript and the canvas environment.

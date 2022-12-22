@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ball</title>
+</head>
+<body>
+	<canvas id = "canvas" width="200" height="200"></canvas>
+	<script>
+		var canvas = document.getElementById("canvas");
+		var ctx = canvas.getContext("2d");
+
+		//Создаем конструктор Ball, задаем начальную позицию мяча и 
+		//скорость по x и y.
+		var Ball = function () {
+			this.x = 100;
+			this.y = 100;
+			this.xSpeed = -2;
+			this.ySpeed = 3;
+		};
+
+		//Отрисовка мяча и добавляем метод к prototype.
+		var circle = function (x, y, radius, fillCircle) {
+			ctx.beginPath();
+			ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+			if (fillCircle) {
+				ctx.fill();
+			} else {
+				ctx.stroke();
+			}
+		};
+		Ball.prototype.draw = function () {
+			circle(this.x, this.y, 3, true);
+		};
+
+		//Перемещаем мяч на установленную величину скорости по x и по y.
+		Ball.prototype.move = function () {
+			this.x += this.xSpeed;
+			this.y += this.ySpeed;
+		};
+
+		//Проверяем сталкивается ли мяч с границей и меняем значение 
+		//this.x  и this.y на противоположные для отскока мяча.
+		Ball.prototype.checkCollision = function () {
+			if (this.x < 0 || this.x > 200) {
+			this.xSpeed = -this.xSpeed;
+			}
+			if (this.y < 0 || this.y > 200) {
+			this.ySpeed = -this.ySpeed;
+			}
+		};
+
+		//Создаем анимацию мяча, передаем методы в функцию.
+		var ball = new Ball();
+		setInterval(function() {
+			ctx.clearRect(0, 0, 200, 200);
+
+			ball.draw();
+			ball.move();
+			ball.checkCollision();
+
+			ctx.strokeRect(0, 0, 200, 200);
+		}, 30);
+
+	</script>
+	
+</body>
+</html>
